@@ -1,19 +1,36 @@
 import streamlit as st
 import pandas as pd
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+
+from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.core.os_manager import ChromeType
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from datetime import datetime
 import time
 import io
-
-driver = webdriver.Chrome()  # Asegúrate de tener el controlador Chrome o usa el de tu navegador preferido
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+#driver = webdriver.Chrome()  # Asegúrate de tener el controlador Chrome o usa el de tu navegador preferido
 states= []
 delivery_dates=[]
 incidents_desc=[]
 incidents_date =[]
 # Función para construir la URL e iniciar el scraping
+
+def get_driver():
+      # Auto-download the correct ChromeDriver
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+
+    
+    return webdriver.Chrome( options=chrome_options)
+
+driver = get_driver()
 
 def scrape_status(guide_number):
     url = f"https://www.deprisa.com//Tracking/?track={guide_number}"  # Cambia la URL según tus necesidades
